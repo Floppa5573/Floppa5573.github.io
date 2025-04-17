@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Метапромтинг - Искусство эффективных запросов</title>
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #166088;
+            --accent-color: #4fc3f7;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-color);
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-top: 0.5rem;
+        }
+        
+        nav {
+            background-color: var(--secondary-color);
+            padding: 1rem 0;
+        }
+        
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        nav li {
+            margin: 0 15px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        nav a:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+        
+        .course-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .sidebar {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 20px;
+            height: fit-content;
+        }
+        
+        .sidebar h3 {
+            margin-top: 0;
+            color: var(--secondary-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+        }
+        
+        .lesson-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .lesson-list li {
+            margin-bottom: 10px;
+        }
+        
+        .lesson-list a {
+            display: block;
+            padding: 8px 10px;
+            color: var(--dark-color);
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .lesson-list a:hover, .lesson-list a.active {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .lesson-content {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 30px;
+        }
+        
+        .lesson-title {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+        
+        .tab-buttons {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        
+        .tab-btn {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            color: var(--dark-color);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .tab-btn.active {
+            border-bottom: 3px solid var(--accent-color);
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .practice-area {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+            margin-bottom: 10px;
+        }
+        
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 50px;
+        }
+        
+        @media (max-width: 768px) {
+            .course-container {
+                grid-template-columns: 1fr;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav li {
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Метапромтинг</h1>
+            <p class="subtitle">Искусство создания эффективных запросов к ИИ</p>
+        </div>
+    </header>
+    
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#lessons">Уроки</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="course-container">
+            <aside class="sidebar">
+                <h3>Программа курса</h3>
+                <ul class="lesson-list">
+                    <li><a href="#lesson1" class="active">Урок 1: Введение в метапромтинг</a></li>
+                    <li><a href="#lesson2">Урок 2: Структура эффективного промта</a></li>
+                    <li><a href="#lesson3">Урок 3: Контекст и спецификация</a></li>
+                    <li><a href="#lesson4">Урок 4: Итеративный подход</a></li>
+                    <li><a href="#lesson5">Урок 5: Продвинутые техники</a></li>
+                </ul>
+            </aside>
+            
+            <main class="lesson-content">
+                <!-- Урок 1 -->
+                <article id="lesson1">
+                    <h2 class="lesson-title">Урок 1: Введение в метапромтинг</h2>
+                    
+                    <div class="tab-buttons">
+                        <button class="tab-btn active" onclick="openTab(event, 'theory1')">Теория</button>
+                        <button class="tab-btn" onclick="openTab(event, 'practice1')">Практика</button>
+                    </div>
+                    
+                    <div id="theory1" class="tab-content active">
+                        <h3>Что такое метапромтинг?</h3>
+                        <p>Метапромтинг - это искусство создания эффективных запросов (промтов) для взаимодействия с искусственным интеллектом. Это навык, который позволяет получать более точные, релевантные и полезные ответы от ИИ-систем.</p>
+                        
+                        <h3>Основные принципы:</h3>
+                        <ul>
+                            <li><strong>Ясность</strong> - четко формулируйте свои запросы</li>
+                            <li><strong>Конкретность</strong> - избегайте расплывчатых формулировок</li>
+                            <li><strong>Контекст</strong> - предоставляйте необходимую информацию</li>
+                            <li><strong>Структура</strong> - организуйте запрос логически</li>
+                        </ul>
+                        
+                        <h3>Почему это важно?</h3>
+                        <p>Хороший промт может значительно улучшить качество ответа ИИ, сократить время на уточнения и сделать взаимодействие более продуктивным.</p>
+                    </div>
+                    
+                    <div id="practice1" class="tab-content">
+                        <h3>Практическое задание</h3>
+                        <p>Попробуйте преобразовать следующие расплывчатые запросы в четкие промты:</p>
+                        
+                        <div class="practice-area">
+                            <p><strong>Пример 1:</strong> "Расскажи что-нибудь интересное"</p>
+                            <textarea placeholder="Ваш улучшенный вариант..."></textarea>
+                            
+                            <p><strong>Пример 2:</strong> "Помоги с бизнесом"</p>
+                            <textarea placeholder="Ваш улучшенный вариант..."></textarea>
+                            
+                            <p><strong>Пример 3:</strong> "Напиши текст"</p>
+                            <textarea placeholder="Ваш улучшенный вариант..."></textarea>
+                            
+                            <button>Проверить ответы</button>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Урок 2 -->
+                <article id="lesson2" style="display:none">
+                    <h2 class="lesson-title">Урок 2: Структура эффективного промта</h2>
+                    
+                    <div class="tab-buttons">
+                        <button class="tab-btn active" onclick="openTab(event, 'theory2')">Теория</button>
+                        <button class="tab-btn" onclick="openTab(event, 'practice2')">Практика</button>
+                    </div>
+                    
+                    <div id="theory2" class="tab-content active">
+                        <h3>Компоненты хорошего промта</h3>
+                        <p>Эффективный промт обычно содержит следующие элементы:</p>
+                        <ol>
+                            <li><strong>Роль</strong> - кем должен "притвориться" ИИ (эксперт, помощник и т.д.)</li>
+                            <li><strong>Задача</strong> - что именно нужно сделать</li>
+                            <li><strong>Контекст</strong> - дополнительная информация для лучшего понимания</li>
+                            <li><strong>Формат</strong> - как должен быть представлен ответ</li>
+                            <li><strong>Ограничения</strong> - что не должно быть включено в ответ</li>
+                        </ol>
+                        
+                        <h3>Пример структурированного промта:</h3>
+                        <pre>
+Ты эксперт по цифровому маркетингу с 10-летним опытом. 
+Напиши подробное руководство по SEO-оптимизации для малого бизнеса. 
+Целевая аудитория - владельцы кафе и ресторанов. 
+Предоставь информацию в виде пошагового списка действий. 
+Не используй сложный профессиональный жаргон, объясняй простыми словами. 
+Добавь примеры для каждого шага.</pre>
+                    </div>
+                    
+                    <div id="practice2" class="tab-content">
+                        <h3>Практическое задание</h3>
+                        <p>Создайте структурированный промт для следующих сценариев:</p>
+                        
+                        <div class="practice-area">
+                            <p><strong>Задание 1:</strong> Написать email-письмо клиенту</p>
+                            <textarea placeholder="Ваш структурированный промт..."></textarea>
+                            
+                            <p><strong>Задание 2:</strong> Подготовить план обучения</p>
+                            <textarea placeholder="Ваш структурированный промт..."></textarea>
+                            
+                            <p><strong>Задание 3:</strong> Создать сравнительный анализ</p>
+                            <textarea placeholder="Ваш структурированный промт..."></textarea>
+                            
+                            <button>Проверить ответы</button>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Урок 3 -->
+                <article id="lesson3" style="display:none">
+                    <h2 class="lesson-title">Урок 3: Контекст и спецификация</h2>
+                    
+                    <div class="tab-buttons">
+                        <button class="tab-btn active" onclick="openTab(event, 'theory3')">Теория</button>
+                        <button class="tab-btn" onclick="openTab(event, 'practice3')">Практика</button>
+                    </div>
+                    
+                    <div id="theory3" class="tab-content active">
+                        <h3>Важность контекста</h3>
+                        <p>Контекст помогает ИИ понять ваши потребности и предоставить более релевантный ответ. Хороший контекст включает:</p>
+                        <ul>
+                            <li>Цель запроса</li>
+                            <li>Целевую аудиторию</li>
+                            <li>Уровень сложности</li>
+                            <li>Фоновую информацию</li>
+                        </ul>
+                        
+                        <h3>Спецификация требований</h3>
+                        <p>Чем конкретнее вы опишете свои требования, тем лучше результат. Укажите:</p>
+                        <ul>
+                            <li>Длину ответа</li>
+                            <li>Стиль изложения</li>
+                            <li>Формат (список, таблица, абзацы и т.д.)</li>
+                            <li>Ключевые моменты, которые должны быть освещены</li>
+                        </ul>
+                        
+                        <h3>Пример с контекстом:</h3>
+                        <pre>
+Я готовлю презентацию для инвесторов о своем стартапе в области EdTech. 
+Мне нужно описание продукта на 1-2 абзаца, простое и убедительное. 
+Аудитория - технологические инвесторы в возрасте 40-60 лет. 
+Акцентируй внимание на инновационности и потенциале масштабирования. 
+Избегай технических деталей.</pre>
+                    </div>
+                    
+                    <div id="practice3" class="tab-content">
+                        <h3>Практическое задание</h3>
+                        <p>Добавьте контекст и спецификацию к следующим запросам:</p>
+                        
+                        <div class="practice-area">
+                            <p><strong>Исходный запрос:</strong> "Напиши описание продукта"</p>
+                            <textarea placeholder="Ваш улучшенный вариант с контекстом..."></textarea>
+                            
+                            <p><strong>Исходный запрос:</strong> "Дай советы по тайм-менеджменту"</p>
+                            <textarea placeholder="Ваш улучшенный вариант с контекстом..."></textarea>
+                            
+                            <p><strong>Исходный запрос:</strong> "Объясни концепцию блокчейна"</p>
+                            <textarea placeholder="Ваш улучшенный вариант с контекстом..."></textarea>
+                            
+                            <button>Проверить ответы</button>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Урок 4 -->
+                <article id="lesson4" style="display:none">
+                    <h2 class="lesson-title">Урок 4: Итеративный подход</h2>
+                    
+                    <div class="tab-buttons">
+                        <button class="tab-btn active" onclick="openTab(event, 'theory4')">Теория</button>
+                        <button class="tab-btn" onclick="openTab(event, 'practice4')">Практика</button>
+                    </div>
+                    
+                    <div id="theory4" class="tab-content active">
+                        <h3>Процесс уточнения</h3>
+                        <p>Часто первый ответ ИИ требует уточнений. Эффективный метапромтинг включает итеративный процесс:</p>
+                        <ol>
+                            <li>Начальный запрос</li>
+                            <li>Анализ ответа</li>
+                            <li>Уточнение или корректировка</li>
+                            <li>Повторение до получения нужного результата</li>
+                        </ol>
+                        
+                        <h3>Техники уточнения:</h3>
+                        <ul>
+                            <li><strong>Детализация</strong> - добавьте конкретные параметры</li>
+                            <li><strong>Коррекция</strong> - укажите, что нужно изменить</li>
+                            <li><strong>Примеры</strong> - предоставьте образцы желаемого результата</li>
+                            <li><strong>Альтернативы</strong> - запросите несколько вариантов</li>
+                        </ul>
+                        
+                        <h3>Пример итерации:</h3>
+                        <pre>
+1. Первый запрос: "Напиши описание для сайта"
+2. Уточнение: "Слишком общее, сделай более конкретным и добавь call-to-action"
+3. Дополнение: "Используй более энергичный тон и включи статистику"
+4. Финальная правка: "Сократи до 100 слов и добавь подзаголовки"</pre>
+                    </div>
+                    
+                    <div id="practice4" class="tab-content">
+                        <h3>Практическое задание</h3>
+                        <p>Перед вами исходный запрос и ответ ИИ. Напишите уточняющие промты:</p>
+                        
+                        <div class="practice-area">
+                            <p><strong>Запрос:</strong> "Напиши введение для статьи о здоровом питании"</p>
+                            <p><strong>Ответ ИИ:</strong> "Здоровое питание важно для хорошего самочувствия. Оно включает разнообразные продукты и соблюдение баланса."</p>
+                            <textarea placeholder="Ваше уточнение..."></textarea>
+                            
+                            <p><strong>Запрос:</strong> "Предложи идеи для мобильного приложения"</p>
+                            <p><strong>Ответ ИИ:</strong> "Приложение для фитнеса, планировщик питания, трекер привычек."</p>
+                            <textarea placeholder="Ваше уточнение..."></textarea>
+                            
+                            <p><strong>Запрос:</strong> "Объясни квантовую физику"</p>
+                            <p><strong>Ответ ИИ:</strong> "Квантовая физика изучает поведение частиц на микроуровне."</p>
+                            <textarea placeholder="Ваше уточнение..."></textarea>
+                            
+                            <button>Проверить ответы</button>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Урок 5 -->
+                <article id="lesson5" style="display:none">
+                    <h2 class="lesson-title">Урок 5: Продвинутые техники</h2>
+                    
+                    <div class="tab-buttons">
+                        <button class="tab-btn active" onclick="openTab(event, 'theory5')">Теория</button>
+                        <button class="tab-btn" onclick="openTab(event, 'practice5')">Практика</button>
+                    </div>
+                    
+                    <div id="theory5" class="tab-content active">
+                        <h3>Продвинутые методы метапромтинга</h3>
+                        <p>Для сложных задач можно использовать специальные техники:</p>
+                        
+                        <h4>1. Цепочка промтов (Prompt Chaining)</h4>
+                        <p>Разбитие сложной задачи на последовательность простых запросов.</p>
+                        
+                        <h4>2. Few-shot prompting</h4>
+                        <p>Предоставление ИИ нескольких примеров желаемого формата ответа.</p>
+                        
+                        <h4>3. Мета-промты</h4>
+                        <p>Запросы, которые учат ИИ лучше понимать ваши последующие промты.</p>
+                        
+                        <h4>4. Контролируемая генерация</h4>
+                        <p>Жесткое ограничение формата ответа с помощью специальных указаний.</p>
+                        
+                        <h3>Пример продвинутого промта:</h3>
+                        <pre>
+Ты - опытный редактор научно-популярных текстов. 
+Я предоставлю тебе черновик статьи, а ты:
+1. Исправь грамматические и стилистические ошибки
+2. Упрости сложные термины, используя аналогии
+3. Добавь подзаголовки каждые 3-4 абзаца
+4. Сократи текст на 20%, сохранив ключевые идеи
+5. В конце предоставь краткое резюме изменений
+ 
+Вот пример желаемого стиля:
+[вставь 1-2 примера абзацев]
+ 
+Статья начинается здесь:</pre>
+                    </div>
+                    
+                    <div id="practice5" class="tab-content">
+                        <h3>Практическое задание</h3>
+                        <p>Создайте продвинутые промты для следующих сложных задач:</p>
+                        
+                        <div class="practice-area">
+                            <p><strong>Задача 1:</strong> Анализ большого документа</p>
+                            <textarea placeholder="Ваш продвинутый промт..."></textarea>
+                            
+                            <p><strong>Задача 2:</strong> Сравнение нескольких вариантов</p>
+                            <textarea placeholder="Ваш продвинутый промт..."></textarea>
+                            
+                            <p><strong>Задача 3:</strong> Творческое задание с ограничениями</p>
+                            <textarea placeholder="Ваш продвинутый промт..."></textarea>
+                            
+                            <button>Проверить ответы</button>
+                        </div>
+                    </div>
+                </article>
+            </main>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>© 2025 Школа метапромтинга. </p>
+        </div>
+    </footer>
+    
+    <script>
+        // Переключение между уроками
+        document.querySelectorAll('.lesson-list a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Удаляем активный класс у всех ссылок
+                document.querySelectorAll('.lesson-list a').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Добавляем активный класс к текущей ссылке
+                this.classList.add('active');
+                
+                // Скрываем все уроки
+                document.querySelectorAll('article').forEach(article => {
+                    article.style.display = 'none';
+                });
+                
+                // Показываем выбранный урок
+                const lessonId = this.getAttribute('href').substring(1);
+                document.getElementById(lessonId).style.display = 'block';
+                
+                // Активируем первую вкладку (теорию)
+                const lesson = document.getElementById(lessonId);
+                lesson.querySelector('.tab-btn').click();
+            });
+        });
+        
+        // Переключение между вкладками (теория/практика)
+        function openTab(evt, tabName) {
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+</html>
