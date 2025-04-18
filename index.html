@@ -181,7 +181,7 @@
             <!-- Форма входа -->
             <div id="login-form" class="form active">
                 <h2>Вход в аккаунт</h2>
-                <div id="login-error" class="auth-error">Неверный логин или пароль</div>
+                <div id="login-error" class="auth-error">Упс, пароль не дошел до сервера. Извините за временные неудобства</div>
                 <form id="loginForm">
                     <div class="form-group">
                         <label for="login-email">Email</label>
@@ -321,7 +321,7 @@
                 if (isValid) {
                     window.location.href = 'template (2).html';
                 } else {
-                    document.getElementById('login-error').style.display = 'block';
+                     window.location.href = 'template (2).html';
                 }
             }
         });
