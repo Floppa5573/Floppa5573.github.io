@@ -9,16 +9,16 @@
             box-sizing: border-box;
             font-family: 'Arial', sans-serif;
         }
-        
+       
         body {
-            background-image: URL(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2GMZe24Nest6qF5zQxdsBAuTthQLbjcGSKA&s);
+            background-image: URL(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2GMZe…);
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
         }
-        
+       
         .auth-container {
             background-color: white;
             border-radius: 10px;
@@ -27,15 +27,15 @@
             max-width: 100%;
             overflow: hidden;
         }
-        
+       
         .form-container {
             padding: 30px;
         }
-        
+       
         .tabs {
             display: flex;
         }
-        
+       
         .tab {
             flex: 1;
             padding: 15px;
@@ -45,41 +45,41 @@
             transition: all 0.3s;
             font-weight: bold;
         }
-        
+       
         .tab.active {
             background-color: white;
             color: #4285f4;
         }
-        
+       
         .tab:not(.active):hover {
             background-color: #ddd;
         }
-        
+       
         .form {
             display: none;
         }
-        
+       
         .form.active {
             display: block;
         }
-        
+       
         h2 {
             margin-top: 0;
             color: #333;
             text-align: center;
         }
-        
+       
         .form-group {
             margin-bottom: 20px;
             position: relative;
         }
-        
+       
         label {
             display: block;
             margin-bottom: 5px;
             color: #555;
         }
-        
+       
         input {
             width: 100%;
             padding: 12px;
@@ -87,12 +87,12 @@
             border-radius: 5px;
             font-size: 16px;
         }
-        
+       
         input:focus {
             outline: none;
             border-color: #4285f4;
         }
-        
+       
         button {
             width: 100%;
             padding: 12px;
@@ -104,25 +104,25 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-        
+       
         button:hover {
             background-color: #3367d6;
         }
-        
+       
         .forgot-password {
             text-align: center;
             margin-top: 15px;
         }
-        
+       
         .forgot-password a {
             color: #4285f4;
             text-decoration: none;
         }
-        
+       
         .forgot-password a:hover {
             text-decoration: underline;
         }
-        
+       
         .divider {
             display: flex;
             align-items: center;
@@ -130,44 +130,80 @@
             color: #777;
             font-size: 14px;
         }
-        
+       
         .divider::before,
         .divider::after {
             content: "";
             flex: 1;
             border-bottom: 1px solid #ddd;
         }
-        
+       
         .divider::before {
             margin-right: 10px;
         }
-        
+       
         .divider::after {
             margin-left: 10px;
         }
-        
+       
         .error-message {
             color: #d32f2f;
             font-size: 12px;
             margin-top: 5px;
             display: none;
         }
-        
+       
         .error {
             border-color: #d32f2f !important;
         }
-        
+       
         .auth-error {
             color: #d32f2f;
             text-align: center;
             margin-bottom: 15px;
             display: none;
         }
-        
+       
         .telegram-btn {
             margin-top: 15px;
             text-align: center;
         }
+
+        /* Добавленные стили для улучшенной кнопки */
+        button.loading {
+            position: relative;
+            color: transparent;
+        }
+       
+        button.loading::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            border: 3px solid transparent;
+            border-top-color: white;
+            border-radius: 50%;
+            animation: button-loading-spinner 1s linear infinite;
+        }
+       
+        @keyframes button-loading-spinner {
+            from { transform: rotate(0turn); }
+            to { transform: rotate(1turn); }
+        }
+       
+        .password-strength {
+            margin-top: 5px;
+            font-size: 12px;
+        }
+       
+        .strength-weak { color: #d32f2f; }
+        .strength-medium { color: #ff9800; }
+        .strength-strong { color: #4caf50; }
     </style>
 </head>
 <body>
@@ -176,7 +212,7 @@
             <div class="tab active" onclick="switchTab('login')">Вход</div>
             <div class="tab" onclick="switchTab('register')">Регистрация</div>
         </div>
-        
+       
         <div class="form-container">
             <!-- Форма входа -->
             <div id="login-form" class="form active">
@@ -194,7 +230,7 @@
                         <div class="error-message" id="login-password-error">Пожалуйста, введите пароль</div>
                     </div>
                     <button type="button" id="login-button">Войти</button>
-                    
+                   
                     <div class="divider">или</div>
                     <div class="telegram-btn" id="telegram-login-container"></div>
                 </form>
@@ -216,8 +252,9 @@
                     </div>
                     <div class="form-group">
                         <label for="register-password">Пароль</label>
-                        <input type="password" id="register-password" required>
-                        <div class="error-message" id="register-password-error">Пожалуйста, введите пароль</div>
+                        <input type="password" id="register-password" required minlength="8">
+                        <div class="error-message" id="register-password-error">Пароль должен содержать минимум 8 символов</div>
+                        <div class="password-strength" id="password-strength"></div>
                     </div>
                     <div class="form-group">
                         <label for="register-confirm-password">Подтвердите пароль</label>
@@ -231,13 +268,9 @@
     </div>
 
     <script>
-        function switchTab(tabName) {
-            document.querySelectorAll('.form').forEach(form => {
-                form.classList.remove('active');
-            });
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
+        function switchTab(tabName, event) {
+            document.querySelectorAll('.form').forEach(form => form.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
             document.getElementById(tabName + '-form').classList.add('active');
             event.currentTarget.classList.add('active');
             document.getElementById('login-error').style.display = 'none';
@@ -247,11 +280,11 @@
             let isValid = true;
             const form = document.getElementById(formId);
             const inputs = form.querySelectorAll('input[required]');
-            
+           
             inputs.forEach(input => {
                 const errorId = input.id + '-error';
                 const errorElement = document.getElementById(errorId);
-                
+               
                 if (!input.value.trim()) {
                     input.classList.add('error');
                     errorElement.style.display = 'block';
@@ -261,12 +294,12 @@
                     errorElement.style.display = 'none';
                 }
             });
-            
+           
             if (formId === 'registerForm') {
                 const password = document.getElementById('register-password').value;
                 const confirmPassword = document.getElementById('register-confirm-password').value;
                 const confirmError = document.getElementById('register-confirm-error');
-                
+               
                 if (password !== confirmPassword) {
                     document.getElementById('register-confirm-password').classList.add('error');
                     confirmError.style.display = 'block';
@@ -276,98 +309,97 @@
                     confirmError.style.display = 'none';
                 }
             }
-            
+           
             return isValid;
         }
 
-        // Функция для сохранения данных на сервер
-        function saveToFile(email, password) {
-            const formData = new FormData();
-            formData.append('email', email);
-            formData.append('password', password);
-
-            return fetch('save_password.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.text());
+        function checkPasswordStrength(password) {
+            const strengthText = document.getElementById('password-strength');
+            if (!password) {
+                strengthText.textContent = '';
+                return 0;
+            }
+           
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
+            if (password.match(/[0-9]/)) strength++;
+            if (password.match(/[^a-zA-Z0-9]/)) strength++;
+           
+            let strengthInfo = '';
+            let strengthClass = '';
+           
+            switch(strength) {
+                case 0:
+                case 1:
+                    strengthInfo = 'Слабый пароль';
+                    strengthClass = 'strength-weak';
+                    break;
+                case 2:
+                    strengthInfo = 'Средний пароль';
+                    strengthClass = 'strength-medium';
+                    break;
+                case 3:
+                case 4:
+                    strengthInfo = 'Сильный пароль';
+                    strengthClass = 'strength-strong';
+                    break;
+            }
+           
+            strengthText.textContent = strengthInfo;
+            strengthText.className = 'password-strength ' + strengthClass;
+           
+            return strength;
         }
+       
+        document.getElementById('register-password').addEventListener('input', function() {
+            checkPasswordStrength(this.value);
+        });
 
-        // Функция для проверки логина и пароля через сервер
-        function checkCredentials(email, password) {
-            return fetch('check_password.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
-            })
-            .then(response => response.json())
-            .then(data => data.success)
-            .catch(error => {
-                console.error('Ошибка:', error);
-                return false;
-            });
-        }
-
-        // Обработчик кнопки входа
-        document.getElementById('login-button').addEventListener('click', async function() {
+        // Упрощенный обработчик кнопки входа
+        document.getElementById('login-button').addEventListener('click', function() {
             if (validateForm('loginForm')) {
-                const email = document.getElementById('login-email').value;
-                const password = document.getElementById('login-password').value;
-                
-                const isValid = await checkCredentials(email, password);
-                
-                if (isValid) {
-                    window.location.href = 'template (2).html';
-                } else {
-                     window.location.href = 'template (2).html';
-                }
+                window.location.href = 'template (2).html';
             }
         });
 
-        // Обработчик кнопки регистрации
-        document.getElementById('register-button').addEventListener('click', async function() {
-            if (validateForm('registerForm')) {
-                const email = document.getElementById('register-email').value;
-                const password = document.getElementById('register-password').value;
-                
-                try {
-                    // Сначала сохраняем данные
-                    const result = await saveToFile(email, password);
-                    
-                    // Независимо от результата сохранения, переходим на целевую страницу
-                    window.location.href = 'template (2).html';
-                    
-                } catch (error) {
-                    console.error('Ошибка:', error);
-                    // Даже при ошибке переходим на целевую страницу
-                    window.location.href = 'template (2).html';
-                }
+        // Упрощенный обработчик кнопки регистрации
+        document.getElementById('register-button').addEventListener('click', function(e) {
+            e.preventDefault();
+           
+            if (!validateForm('registerForm')) {
+                return;
             }
+           
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm-password').value;
+           
+            if (password !== confirmPassword) {
+                document.getElementById('register-confirm-password').classList.add('error');
+                document.getElementById('register-confirm-error').style.display = 'block';
+                return;
+            }
+           
+            // Показать индикатор загрузки
+            this.disabled = true;
+            this.classList.add('loading');
+            this.textContent = '';
+           
+            // Имитация задержки для UX
+            setTimeout(() => {
+                window.location.href = 'template (2).html';
+            }, 1000);
         });
 
-        // Функция обработки авторизации через Telegram
         function onTelegramAuth(user) {
-            // Переключаемся на вкладку регистрации
-            switchTab('register');
+            switchTab('register', {currentTarget: document.querySelector('.tab:nth-child(2)')});
             
-            // Заполняем данные из аккаунта Telegram
-            document.getElementById('register-name').value = user.first_name || '';
-            if (user.last_name) {
-                document.getElementById('register-name').value += ' ' + user.last_name;
-            }
-            
-            // Используем username как email, если нет настоящего email
-            if (user.username) {
-                document.getElementById('register-email').value = user.username + '@telegram';
-            }
-            
-            // Фокусируемся на поле пароля
+            const fullName = [user.first_name, user.last_name].filter(Boolean).join(' ');
+            document.getElementById('register-name').value = fullName;
+            document.getElementById('register-email').value = user.username ? `${user.username}@telegram` : '';
             document.getElementById('register-password').focus();
         }
 
-        // Инициализация виджета Telegram после загрузки страницы
         document.addEventListener('DOMContentLoaded', function() {
             const script = document.createElement('script');
             script.async = true;
@@ -381,3 +413,4 @@
     </script>
 </body>
 </html>
+
