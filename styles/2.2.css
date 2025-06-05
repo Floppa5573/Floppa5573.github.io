@@ -1,0 +1,29 @@
+body {
+    font-family: Arial;
+    background-image: url(../images/лес.jpg);
+}
+h1 {
+    font-size: 32pt;
+    text-align: center;
+    font-weight: normal;
+    font-family: Verdana;
+}
+video {
+    width: 40%;
+}
+a {
+    font-size: xx-large;
+}
+
+table {
+    border-width: 3pt;
+    border-style: solid;
+    border-color: darkgrey;
+}
+main {
+    background-color:darkgray;
+}
+
+img.sac {
+    float: right;
+}
